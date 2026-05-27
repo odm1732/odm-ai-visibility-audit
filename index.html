@@ -401,6 +401,12 @@ html,body{
         <input class="field-input" id="city" type="text" placeholder="Charlotte, NC" oninput="chk()">
       </div>
     </div>
+    <div class="field-row full">
+      <div class="field-group">
+        <label class="field-label">Website URL <span class="req">*</span></label>
+        <input class="field-input" id="website" type="url" placeholder="https://ridgetoproofing.com" oninput="chk()">
+      </div>
+    </div>
   </div>
   <div class="actions">
     <button class="btn-back" onclick="goBack(4)">← Back</button>
@@ -451,7 +457,7 @@ html,body{
 <script>
 const WH="https://odm.app.n8n.cloud/webhook/odm-lead-gen-audit";
 const TOTAL=5;
-const S={q2:null,q3:null,q4:null,fname:"",lname:"",company:"",email:"",phone:"",city:""};
+const S={q2:null,q3:null,q4:null,fname:"",lname:"",company:"",email:"",phone:"",city:"",website:""};
 
 function buildDots(c){
   const w=document.getElementById("dots");w.innerHTML="";
@@ -491,7 +497,8 @@ function chk(){
   S.email=document.getElementById("email").value.trim();
   S.phone=document.getElementById("phone").value.trim();
   S.city=document.getElementById("city").value.trim();
-  const ok=S.fname&&S.company&&S.email.includes("@")&&S.email.includes(".")&&S.city;
+  S.website=document.getElementById("website").value.trim();
+  const ok=S.fname&&S.company&&S.email.includes("@")&&S.email.includes(".")&&S.city&&S.website;
   document.getElementById("submitBtn").disabled=!ok;
 }
 
@@ -503,7 +510,7 @@ async function sub(){
   document.getElementById("cardFooter").style.display="none";
   document.getElementById("stepCounter").style.display="none";
   document.getElementById("prog").style.width="100%";
-  const p={company:S.company,name:(S.fname+" "+S.lname).trim(),first_name:S.fname,last_name:S.lname,email:S.email,phone:S.phone,city:S.city,vertical:"Roofing",reviews:S.q2,revenue:S.q3,challenge:S.q4,source:"AI Visibility Audit Quiz",submitted_at:new Date().toISOString()};
+  const p={company:S.company,name:(S.fname+" "+S.lname).trim(),first_name:S.fname,last_name:S.lname,email:S.email,phone:S.phone,city:S.city,vertical:"Roofing",reviews:S.q2,revenue:S.q3,challenge:S.q4,source:"AI Visibility Audit Quiz",website:S.website,submitted_at:new Date().toISOString()};
   try{fetch(WH,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p),mode:"no-cors"}).catch(()=>{})}catch(e){}
   await new Promise(r=>setTimeout(r,2800));
   document.getElementById("spinner").style.display="none";
